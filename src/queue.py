@@ -11,15 +11,33 @@ class QueueSimulator:
     arrival_interval: tuple[int, int]
     departure_interval: tuple[int, int]
     rand: Pseudo_Random_Generator
-    status: int = 0
-    loss: int = 0
-    global_time: float = 0
-    first_arrival: int = 2
-    scheduler: list[Event] = None
+    first_arrival: int
 
     def __post_init__(self):
+        self.status = 0
+        self.loss = 0
+        self.global_time = 0
         # Initialize the scheduler with the first arrival
         self.scheduler = [Event(EventType.ARRIVAL, self.first_arrival)]
+
+    @classmethod
+    def from_config(cls, config):
+        config = config['QueueSimulator']
+        # Default first arrival time
+        if 'first_arrival' not in config:
+            config['first_arrival'] = 2
+
+        return cls(
+            servers=config['servers'],
+            capacity=config['capacity'],
+            arrival_interval=config['arrival_interval'],
+            departure_interval=config['departure_interval'],
+            first_arrival=config['first_arrival'],
+            rand=Pseudo_Random_Generator(
+                config['rand']['A'], config['rand']['C'],
+                eval(config['rand']['M']), config['rand']['seed']
+            ),
+        )
 
     def next_event(self):
         next_event = min(self.scheduler, key=lambda x: x.time)
