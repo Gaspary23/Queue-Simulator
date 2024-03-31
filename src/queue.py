@@ -61,7 +61,10 @@ class QueueSimulator:
         else:
             self.loss += 1
         self.scheduler.append(
-            Event(EventType.ARRIVAL, event_time + self.schedule_arrival())
+            Event(
+                EventType.ARRIVAL,
+                event_time + self.schedule_arrival()
+            )
         )
 
     def departure(self, event_time):
