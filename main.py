@@ -11,13 +11,22 @@ def main():
     events = []
     queue = QueueSimulator.from_config(read_config('config.yml'))
 
-    for _ in range(SIMULATION_REPETITIONS):
+    count_randoms = 0
+    while count_randoms < SIMULATION_REPETITIONS:
         event = queue.next_event()
         events.append(event)
+
         if event.event_type == EventType.ARRIVAL:
             queue.arrival(event.time)
+
+            count_randoms += 1
+            if queue.status < queue.capacity and queue.status <= queue.servers:
+                count_randoms += 1
         else:
             queue.departure(event.time)
+
+            if queue.status >= queue.servers:
+                count_randoms += 1
 
     print_statistics(queue, events)
 
