@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from event import Event, EventType
-from random_generator import Pseudo_Random_Generator
+from src.event import Event, EventType
+from src.random_generator import Pseudo_Random_Generator
 
 
 @dataclass
@@ -58,7 +58,7 @@ class QueueSimulator:
             )
 
     def schedule_arrival(self):
-        return self.rand.next_random() * (self.arrival_interval[1] - self.arrival_interval[0]) + self.arrival_interval[0]
+        return self.rand.next_random_bounded(self.arrival_interval[0], self.arrival_interval[1])
 
     def schedule_departure(self):
-        return self.rand.next_random() * (self.departure_interval[1] - self.departure_interval[0]) + self.departure_interval[0]
+        return self.rand.next_random_bounded(self.departure_interval[0], self.departure_interval[1])

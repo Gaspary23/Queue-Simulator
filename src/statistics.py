@@ -1,4 +1,4 @@
-from event import EventType
+from src.event import EventType
 
 
 def get_statistics(queue, events):

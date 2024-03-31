@@ -1,7 +1,7 @@
-from event import EventType
-from queue_simulator import QueueSimulator
-from random_generator import Pseudo_Random_Generator
-from statistics import print_statistics
+from src.event import EventType
+from src.queue import QueueSimulator
+from src.random_generator import Pseudo_Random_Generator
+from src.statistics import print_statistics
 
 SIMULATION_REPETITIONS = 100_000
 
