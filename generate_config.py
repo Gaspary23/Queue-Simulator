@@ -1,5 +1,3 @@
-import yaml
-
 # Example configuration data
 config_data = {
     'QueueSimulator': {
