@@ -9,26 +9,33 @@ SIMULATION_REPETITIONS = 100_000
 
 def main():
     events = []
-    queue = QueueSimulator.from_config(read_config('config.yml'))
+    queue1 = QueueSimulator.from_config(read_config('configQ1.yml'))
+    queue2 = QueueSimulator.from_config(read_config('configQ2.yml'))
 
     count_randoms = 0
     while count_randoms < SIMULATION_REPETITIONS:
-        event = queue.next_event()
+        event = queue1.next_event()
         events.append(event)
 
         if event.event_type == EventType.ARRIVAL:
-            queue.arrival(event.time)
+            queue1.arrival(event.time)
 
             count_randoms += 1
-            if queue.status < queue.capacity and queue.status <= queue.servers:
+            if queue1.status < queue1.capacity and queue1.status <= queue1.servers:
                 count_randoms += 1
         else:
-            queue.departure(event.time)
+            queue1.departure(event.time)
+            queue2.arrival(event.time)
+            count_randoms += 1
+            if queue2.status < queue2.capacity and queue2.status <= queue2.servers:
+                count_randoms += 1   
 
-            if queue.status >= queue.servers:
+
+            if queue1.status >= queue1.servers:
                 count_randoms += 1
 
-    print_statistics(queue, events)
+    print_statistics(queue1, events)
+    print_statistics(queue2, events)
 
 
 def read_config(filename='config.yml'):
