@@ -11,8 +11,7 @@ def main():
     events = []
     queue_count = count_queues(read_config('queue_config.yml'))
     queues = []
-    for i in range(queue_count):
-        queues.append(QueueSimulator.from_config(read_config(f'queue_config.yml'), i+1))
+    queues = [QueueSimulator.from_config(read_config(f'queue_config.yml'), i+1) for i in range(queue_count)]
     
     queue1 = queues[0]
     queue2 = queues[1]
