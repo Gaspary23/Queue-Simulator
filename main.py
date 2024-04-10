@@ -18,28 +18,30 @@ def main():
 
     count_randoms = 0
     while count_randoms < SIMULATION_REPETITIONS:
-        event = queue1.next_event()
+        event = queues[0].next_event()
         events.append(event)
 
         if event.event_type == EventType.ARRIVAL:
-            queue1.arrival(event.time)
+            queues[0].arrival(event.time)
 
             count_randoms += 1
-            if queue1.status < queue1.capacity and queue1.status <= queue1.servers:
+            if queues[0].status < queues[0].capacity and queues[0].status <= queues[0].servers:
                 count_randoms += 1
         else:
-            queue1.departure(event.time)
-            queue2.arrival(event.time)
-            count_randoms += 1
-            if queue2.status < queue2.capacity and queue2.status <= queue2.servers:
-                count_randoms += 1   
-
-
-            if queue1.status >= queue1.servers:
-                count_randoms += 1
-
-    print_statistics(queue1, events)
-    print_statistics(queue2, events)
+            for i in range(queue_count):
+                if queues[i].status > 0:
+                    queues[i].departure(event.time)
+                    if queues[i].status >= queues[i].servers:
+                        count_randoms += 1
+                    if i < queue_count - 1:
+                        queues[i+1].arrival(event.time)
+                        count_randoms += 1
+                        if queues[i+1].status < queues[i+1].capacity and queues[i+1].status <= queues[i+1].servers:
+                            count_randoms += 1
+        
+    for queue in queues:
+        print_statistics(queue, events)
+    
 
 
 def read_config(filename='config.yml'):
