@@ -9,9 +9,13 @@ SIMULATION_REPETITIONS = 100_000
 
 def main():
     events = []
+    queue_count = count_queues(read_config('queue_config.yml'))
+    queues = []
+    for i in range(queue_count):
+        queues.append(QueueSimulator.from_config(read_config(f'queue_config.yml'), i+1))
     
-    queue1 = QueueSimulator.from_config(read_config('configQ1.yml'))
-    queue2 = QueueSimulator.from_config(read_config('configQ2.yml'))
+    queue1 = queues[0]
+    queue2 = queues[1]
 
     count_randoms = 0
     while count_randoms < SIMULATION_REPETITIONS:
@@ -51,6 +55,8 @@ def read_config(filename='config.yml'):
         print(f"Error parsing YAML file: {e}")
         return None
 
+def count_queues(config):
+    return len(config['QueueSimulator'])
 
 if __name__ == "__main__":
     main()

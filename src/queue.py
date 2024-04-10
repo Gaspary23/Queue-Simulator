@@ -21,8 +21,8 @@ class QueueSimulator:
         self.scheduler = [Event(EventType.ARRIVAL, self.first_arrival)]
 
     @classmethod
-    def from_config(cls, config):
-        config = config['QueueSimulator']
+    def from_config(cls, config, queue_number=1):
+        config = config[f'QueueSimulator'][f'Q{queue_number}']
         # Default first arrival time
         if 'first_arrival' not in config:
             config['first_arrival'] = 2
