@@ -83,3 +83,4 @@ class QueueSimulator:
 
     def schedule_departure(self):
         return self.rand.next_random_bounded(self.departure_interval[0], self.departure_interval[1])
+ # type: ignore

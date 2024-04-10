@@ -9,6 +9,7 @@ SIMULATION_REPETITIONS = 100_000
 
 def main():
     events = []
+    
     queue1 = QueueSimulator.from_config(read_config('configQ1.yml'))
     queue2 = QueueSimulator.from_config(read_config('configQ2.yml'))
 

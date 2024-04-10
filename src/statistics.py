@@ -50,3 +50,4 @@ def print_statistics(queue, events):
     print(f'Simulation time: {sim_time}')
     print(f'Mean population: {mean_population.__round__(2)}')
     print(f'Number of losses: {queue.loss}')
+ # type: ignore

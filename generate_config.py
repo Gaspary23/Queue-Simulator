@@ -21,7 +21,7 @@ config_dataQ1 = {
         'capacity': 3,
         'arrival_interval': [1, 4],
         'departure_interval': [3, 4],
-        'first_arrival': 2,
+        'first_arrival': 1.5,
         'rand': {
             'A': 512345,
             'C': 373621,
@@ -61,6 +61,10 @@ def generate_config_file(filename, config_data):
 
 
 if __name__ == '__main__':
+    import sys
 #    generate_config_file('config.yml', config_data)
-    generate_config_file('configQ1.yml', config_dataQ1)
-    generate_config_file('configQ2.yml', config_dataQ2)
+
+    qtd = int(sys.argv[1])
+    for i in range(qtd):
+        generate_config_file(f'configQ{i+1}.yml', config_data)
+    

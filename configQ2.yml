@@ -1,0 +1,11 @@
+QueueSimulator:
+  servers: 1
+  capacity: 5
+  arrival_interval: [1, 0]
+  departure_interval: [2, 3]
+  first_arrival: 100000
+  rand:
+    A: 512345
+    C: 373621
+    M: 2**31
+    seed: 100
