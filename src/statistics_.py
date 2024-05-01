@@ -7,7 +7,7 @@ def print_statistics(simulation):
         state_dict, mean_population = _get_statistics(queue, simulation.global_time)
         print(f'{"*"*70}')
         print(f"Queue {qname[1]}: (G/G/{queue.servers}/{queue.capacity})")
-        if i == simulation.starting_queue:
+        if qname == simulation.starting_queue:
             print(f"Arrival: {simulation.arrival_interval}")
         print(f"Departure: {queue.departure_interval}")
         print(f'{"*"*70}')
