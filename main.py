@@ -1,27 +1,18 @@
-from src.simulation import Simulation
+import sys
+
 from src.statistics_ import print_statistics
-from utils.config_reader import read_config
-
-SIMULATION_REPETITIONS = 100_000
-FIRST_ARRIVAL = 2
+from utils.config_reader import instantiate_simulation_from_config
 
 
-def main():
-    arrival_interval, queues, rand = read_config(SIMULATION_REPETITIONS)
-
-    simulation = Simulation(
-        queues=queues,
-        starting_queue=0,
-        random=rand,
-        arrival_interval=arrival_interval,
-        first_arrival=FIRST_ARRIVAL,
-    )
-
-    while simulation.randoms_used < SIMULATION_REPETITIONS:
-        simulation.simulation_step()
-
+def main(filename="config.yml"):
+    simulation, repetitions = instantiate_simulation_from_config(filename)
+    simulation.run(repetitions)
     print_statistics(simulation)
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
+        main(filename)
+    else:
+        main()

@@ -2,10 +2,11 @@ def print_statistics(simulation):
     print(f'{"-"*70}')
     print(f'{"-"*25} SIMULATION  REPORT {"-"*25}')
     print(f'{"-"*70}')
-    for i, queue in enumerate(simulation.queues):
+    for i, qname in enumerate(simulation.queues):
+        queue = simulation.queues[qname]
         state_dict, mean_population = _get_statistics(queue, simulation.global_time)
         print(f'{"*"*70}')
-        print(f"Queue {i+1}: (G/G/{queue.servers}/{queue.capacity})")
+        print(f"Queue {qname[1]}: (G/G/{queue.servers}/{queue.capacity})")
         if i == simulation.starting_queue:
             print(f"Arrival: {simulation.arrival_interval}")
         print(f"Departure: {queue.departure_interval}")

@@ -6,8 +6,8 @@ from src.queue_ import Queue
 
 @dataclass
 class Simulation:
-    queues: list[Queue]
-    starting_queue: int  # Index of the queue that receives arrivals
+    queues: dict[str, Queue]  # {queue_name: Queue}
+    starting_queue: str
     random: iter  # Generator of random numbers
     arrival_interval: tuple[int, int]
     first_arrival: int
@@ -20,12 +20,13 @@ class Simulation:
             Event(EventType.ARRIVAL, self.first_arrival, queue=self.starting_queue)
         ]
 
-    def simulation_step(self):
-        event = self._next_event()
-        if event.event_type == EventType.ARRIVAL:
-            self._arrival(event)
-        else:
-            self._departure(event)
+    def run(self, simulation_randoms: int):
+        while self.randoms_used < simulation_randoms:
+            event = self._next_event()
+            if event.event_type == EventType.ARRIVAL:
+                self._arrival(event)
+            else:
+                self._departure(event)
 
     def _next_event(self):
         next_event = min(self.scheduler, key=lambda x: x.time)
@@ -49,7 +50,7 @@ class Simulation:
 
     def _departure(self, event: Event):
         self._update_time(event)
-        queue = self.queues[event.queue]
+        queue = event.queue
 
         queue.status -= 1
         if queue.status >= queue.servers:
@@ -67,8 +68,11 @@ class Simulation:
     def _update_time(self, event: Event):
         delta = event.time - self.global_time
 
-        for queue in self.queues:
-            queue.states[queue.status]["Time"] += delta
+        for queue in self.queues.values():
+            if queue.status not in queue.states:
+                queue.states[queue.status] = {"Time": delta, "Probability": 0}
+            else:
+                queue.states[queue.status]["Time"] += delta
 
         self.global_time = event.time
 
@@ -112,6 +116,6 @@ class Simulation:
             Event(
                 EventType.DEPARTURE,
                 self.global_time + delta,
-                queue=self.queues.index(queue),
+                queue=queue,
             )
         )

@@ -1,66 +1,51 @@
 import sys
 
 # Example configuration data
-single_queue = {
+example_config = {
     "Simulator": {
-        "arrival_interval": [2, 5],
-    },
-    "Q0": {
-        "servers": 1,
-        "capacity": 5,
-        "departure_interval": [3, 5],
-        "departure_paths": {},
-    },
-    "rand": {"A": 512345, "C": 373621, "M": "2**31", "seed": 100},
-}
-
-three_queues = {
-    "Simulator": {"arrival_interval": [2, 5]},
-    "Q0": {
-        "servers": 3,
-        "capacity": 3,
-        "departure_interval": [2, 8],
-        "departure_paths": {1: 0.4},
+        "simulation_randoms": 100_000,
+        "arrival_interval": [2, 4],
+        "first_arrival": 2,
+        "starting_queue": "Q1",
     },
     "Q1": {
-        "servers": 2,
-        "capacity": 3,
-        "departure_interval": [10, 20],
-        "departure_paths": {0: 0.3, 2: 0.7},
+        "servers": 1,
+        "capacity": "null",
+        "departure_interval": [1, 2],
+        "departure_paths": {"Q2": 0.8, "Q3": 0.2},
     },
     "Q2": {
-        "servers": 4,
-        "capacity": 3,
-        "departure_interval": [15, 30],
-        "departure_paths": {},
+        "servers": 2,
+        "capacity": 5,
+        "departure_interval": [4, 8],
+        "departure_paths": {"Q1": 0.3, "Q2": 0.5},
     },
-    "rand": {"A": 512345, "C": 373621, "M": "2**31", "seed": 100},
+    "Q3": {
+        "servers": 2,
+        "capacity": 10,
+        "departure_interval": [5, 15],
+        "departure_paths": {"Q3": 0.7},
+    },
+    "rand": {"A": 1103515, "C": 123456, "M": "2**31", "seed": 23},
 }
 
 
-def generate_config_file(filename, config_data, num_queues):
+def generate_config_file(filename, config_data):
     with open(filename, "w") as file:
-        file.write("Simulator:\n")
-        for key, value in config_data["Simulator"].items():
-            file.write(f"  {key}: {value}\n")
-        for i in range(num_queues):
-            file.write(f"Q{i}:\n")
-            for key, value in config_data[f"Q{i}"].items():
-                file.write(f"  {key}: {value}\n")
-        file.write("rand:\n")
-        for key, value in config_data["rand"].items():
-            file.write(f"  {key}: {value}\n")
+        for key, value in config_data.items():
+            if key == "Simulator":
+                file.write(f"{key}:\n")
+                for k, v in value.items():
+                    file.write(f"  {k}: {v}\n")
+            elif key == "rand":
+                file.write(f"{key}:\n")
+                for k, v in value.items():
+                    file.write(f"  {k}: {v}\n")
+            else:
+                file.write(f"{key}:\n")
+                for k, v in value.items():
+                    file.write(f"  {k}: {v}\n")
 
 
 if __name__ == "__main__":
-    try:
-        qtd = int(sys.argv[1])
-    except IndexError:
-        print("Usage: python generate_config.py <num_queues>")
-        sys.exit(1)
-    match qtd:
-        case 1:
-            config = single_queue
-        case 3:
-            config = three_queues
-    generate_config_file("config.yml", config, qtd)
+    generate_config_file("config.yml", example_config)
