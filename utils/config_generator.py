@@ -16,13 +16,13 @@ example_config = {
         "servers": 2,
         "capacity": 5,
         "departure_interval": [4, 8],
-        "departure_paths": {"Q1": 0.3, "Q2": 0.5},
+        "departure_paths": {"Q1": 0.3, "Q3": 0.5},
     },
     "Q3": {
         "servers": 2,
         "capacity": 10,
         "departure_interval": [5, 15],
-        "departure_paths": {"Q3": 0.7},
+        "departure_paths": {"Q2": 0.7},
     },
     "rand": {"A": 1103515, "C": 123456, "M": "2**31", "seed": 23},
 }
