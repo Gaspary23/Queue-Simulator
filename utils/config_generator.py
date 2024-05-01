@@ -1,5 +1,3 @@
-import sys
-
 # Example configuration data
 example_config = {
     "Simulator": {
