@@ -1,14 +1,14 @@
-# Simulador de filas
+# Queue Simulator
 
-O simulador usa um arquivo chamado `config.yml` para carregar os parâmetros da simulação. Para gerar um arquivo de configuração com os parâmetros padrão, basta rodar o script `generate_config.py` com o comando:
+The simulator uses a file called `config.yml` to load the simulation parameters. To generate a configuration file with default parameters, just run the script `config_generator.py`, specifying the number of desired queues with the command:
 
 ```bash
-python generate_config.py queue_qtd
+python utils/config_generator.py <num_queues>
 ```
 
-Depois de gerar o arquivo de configuração, basta alterar os valores dos parâmetros no arquivo `config.yml` para os valores desejados.
+After generating the configuration file, just change the parameter values in the `config.yml` file to the desired values.
 
-Para rodar o simulador basta executar o arquivo `main.py` com o comando:
+To run the simulator just execute the `main.py` file with the command:
 
 ```bash
 python main.py

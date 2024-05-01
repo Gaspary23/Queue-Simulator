@@ -11,3 +11,4 @@ class EventType(Enum):
 class Event:
     event_type: EventType
     time: float
+    queue: int = 0
