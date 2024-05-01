@@ -7,12 +7,12 @@ FIRST_ARRIVAL = 2
 
 
 def main():
-    arrival_interval, queues, rands = read_config(SIMULATION_REPETITIONS)
+    arrival_interval, queues, rand = read_config(SIMULATION_REPETITIONS)
 
     simulation = Simulation(
         queues=queues,
         starting_queue=0,
-        random_generator=rands,
+        random=rand,
         arrival_interval=arrival_interval,
         first_arrival=FIRST_ARRIVAL,
     )

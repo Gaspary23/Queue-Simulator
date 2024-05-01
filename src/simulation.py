@@ -2,14 +2,13 @@ from dataclasses import dataclass
 
 from src.event import Event, EventType
 from src.queue_ import Queue
-from src.random_ import Random_Generator
 
 
 @dataclass
 class Simulation:
     queues: list[Queue]
     starting_queue: int  # Index of the queue that receives arrivals
-    random_generator: Random_Generator
+    random: iter  # Generator of random numbers
     arrival_interval: tuple[int, int]
     first_arrival: int
     randoms_used: int = 0
@@ -56,7 +55,7 @@ class Simulation:
         if queue.status >= queue.servers:
             self._schedule_departure(queue)
 
-        dest_queue = self._choose_destination()
+        dest_queue = self._choose_destination(queue)
         if dest_queue is not None:
             if not dest_queue.is_full():
                 dest_queue.status += 1
@@ -73,14 +72,23 @@ class Simulation:
 
         self.global_time = event.time
 
-    def _choose_destination(self):
+    def _choose_destination(self, queue: Queue):
+        if len(queue.departure_paths) == 0:
+            return None
+
+        self.randoms_used += 1
+        rand = next(self.random)
+
+        for q, prob in queue.departure_paths.items():
+            if rand < prob:
+                return self.queues[q]
+            rand -= prob
         return None
 
     def _schedule_arrival(self):
         self.randoms_used += 1
         delta = (
-            next(self.random_generator.random_generator)
-            * (self.arrival_interval[1] - self.arrival_interval[0])
+            next(self.random) * (self.arrival_interval[1] - self.arrival_interval[0])
             + self.arrival_interval[0]
         )
 
@@ -95,7 +103,7 @@ class Simulation:
     def _schedule_departure(self, queue: Queue):
         self.randoms_used += 1
         delta = (
-            next(self.random_generator.random_generator)
+            next(self.random)
             * (queue.departure_interval[1] - queue.departure_interval[0])
             + queue.departure_interval[0]
         )

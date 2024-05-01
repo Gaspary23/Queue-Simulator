@@ -7,6 +7,7 @@ class Queue:
     servers: int
     capacity: int
     departure_interval: tuple[int, int]
+    departure_paths: dict[int, float]  # {queue_index: probability}
     status: int = 0
     loss: int = 0
 
@@ -25,4 +26,5 @@ class Queue:
             servers=config["servers"],
             capacity=config["capacity"],
             departure_interval=config["departure_interval"],
+            departure_paths=config["departure_paths"],
         )
